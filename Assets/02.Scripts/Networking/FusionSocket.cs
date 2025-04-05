@@ -53,7 +53,31 @@ namespace UltimateCartFights.Network {
             StartGameResult result = await Runner.JoinSessionLobby(SessionLobby.ClientServer);
 
             if (!result.Ok)
-						    throw new NetworkException(result.ShutdownReason);
+                throw new NetworkException(result.ShutdownReason);
+        }
+
+        protected static async Task CreateRoom(RoomInfo room) {
+            StartGameResult result = await Runner.StartGame(new StartGameArgs {
+                GameMode = GameMode.Host,
+                PlayerCount = room.MaxPlayer,
+                SessionProperties = GetRoomProperties(room),
+            });
+            
+            if(!result.Ok)
+                throw new NetworkException(result.ShutdownReason);
+        }
+
+        protected static async Task JoinRoom(RoomInfo room) {
+            StartGameResult result = await Runner.StartGame(new StartGameArgs {
+                GameMode = GameMode.Client,
+                SessionName = room.RoomID,
+                PlayerCount = room.MaxPlayer,
+                SessionProperties = GetRoomProperties(room),
+                EnableClientSessionCreation = false,
+            });
+
+            if(!result.Ok)
+                throw new NetworkException(result.ShutdownReason);
         }
 
         protected static async Task Close() {
@@ -65,6 +89,19 @@ namespace UltimateCartFights.Network {
             Runner = null;
 
             isFirstSessionUpdate = true;
+        }
+
+        #endregion
+
+        #region Other Method
+
+        private static Dictionary<string, SessionProperty> GetRoomProperties(RoomInfo room) {
+            Dictionary<string, SessionProperty> properties = new Dictionary<string, SessionProperty>();
+
+            properties["RoomName"] = room.RoomName;
+            properties["HostNickname"] = room.HostNickname;
+
+            return properties;
         }
 
         #endregion
