@@ -5,10 +5,13 @@ namespace UltimateCartFights.Network {
 
         public void Start() {
             PanelUI.Instance.SetPanel(PanelUI.Panel.ROOM);
+            PanelUI.Instance.InitializeRoom();
         }
 
         public void Update() { }
 
-        public void Terminate() { }
+        public void Terminate() { 
+            PanelUI.Instance.LeaveRoom();
+        }
     }
 }

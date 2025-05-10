@@ -2,6 +2,7 @@ using Fusion;
 using System;
 using System.Collections.Generic;
 using UltimateCartFights.UI;
+using UltimateCartFights.Utility;
 using UnityEngine;
 
 namespace UltimateCartFights.Network {
@@ -44,6 +45,15 @@ namespace UltimateCartFights.Network {
 					return true;
 			} 
 		}
+
+		public static SessionInfo GetSessionInfo() {
+			return Runner.SessionInfo;
+		}
+				
+		public static bool IsHost() {
+			if (Runner == null) return false;
+			return Runner.IsServer;
+		} 
 		
 		#endregion
 
@@ -171,5 +181,23 @@ namespace UltimateCartFights.Network {
 		}
 		
 		#endregion
+
+		#region Room Event Method
+
+        public override void OnPlayerJoined(NetworkRunner runner, PlayerRef player) {
+            if (!runner.IsServer) return;
+
+            runner.Spawn(ResourceManager.Instance.Client, Vector3.zero, Quaternion.identity, player);
+        }
+
+        public override void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
+            if (!runner.IsServer) return;
+						Debug.Log("[ TO-DO ] Remove PlayerClient object!");
+						
+            ClientPlayer client = ClientPlayer.RemovePlayer(player);
+            runner.Despawn(client.Object);
+        }
+
+        #endregion
     }
 }

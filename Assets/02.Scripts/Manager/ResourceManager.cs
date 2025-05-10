@@ -6,6 +6,7 @@ namespace UltimateCartFights.Utility {
     public class ResourceManager : MonoBehaviour {
         [Header("Network Objects")]
         public GameObject Session;
+        public GameObject Client;
 
         [Header("Character Sprites")]
         public List<Sprite> Characters;
