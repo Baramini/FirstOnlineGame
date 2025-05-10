@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using UltimateCartFights.UI;
@@ -32,6 +33,18 @@ namespace UltimateCartFights.Network {
 		    }
 
         #endregion
+
+		#region Scene Loading Method
+
+        public static void LoadGame() {
+            sceneManager.LoadScene(SCENE.GAME);
+        }
+
+        public static void LoadRoom() {
+            sceneManager.LoadScene(SCENE.ROOM);
+        }
+
+        #endregion
         
         #region Network State Method
 
@@ -60,108 +73,178 @@ namespace UltimateCartFights.Network {
 		#region Network Method
 
 		public static async new void Open() {
-					try {
-						stateManager.StopState();
-						await FusionSocket.Open();
-						stateManager.StartState(STATE.LOADING_LOBBY);
-					} catch(NetworkException e) {
-						stateManager.Abort();
-						PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
-					} catch (Exception e) {
+			try {
+					stateManager.StopState();
+					await FusionSocket.Open();
+					stateManager.StartState(STATE.LOADING_LOBBY);
+			} catch(NetworkException e) {
+					stateManager.Abort();
+					PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			} catch (Exception e) {
 				stateManager.Abort();
 				PopupUI.Instance.OpenError(e.Message);
 			}
-				}
+		}
 				
-				public static async new void JoinLobby() {
-					try {
-						stateManager.StopState();
-						await FusionSocket.JoinLobby();
-					} catch(NetworkException e) {
-						stateManager.Abort();
-						PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
-					} catch (Exception e) {
+		public static async new void JoinLobby() {
+			try {
+				stateManager.StopState();
+				await FusionSocket.JoinLobby();
+			} catch(NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			} catch (Exception e) {
 				stateManager.Abort();
 				PopupUI.Instance.OpenError(e.Message);
 			}
-				}
+		}
 
-				public static async new void CreateRoom(RoomInfo room) {
-				    try {
-				        stateManager.StopState();
-				        await FusionSocket.CreateRoom(room);
-				        stateManager.StartState(STATE.ROOM);
-				    } catch (NetworkException e) {
-				        stateManager.Abort();
-				        PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
-				    }  catch (Exception e) {
+		public static void StartLoading() {
+			try {
+				stateManager.StopState();
+				stateManager.StartState(STATE.LOADING_GAME);
+			} catch (NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			} catch (Exception e) {
                 stateManager.Abort();
                 PopupUI.Instance.OpenError(e.Message);
             }
-				}
-
-				public static async new void JoinRoom(RoomInfo room) {
-				    try {
-				        stateManager.StopState();
-				        await FusionSocket.JoinRoom(room);
-				        stateManager.StartState(STATE.ROOM);
-				    } catch (NetworkException e) {
-				        stateManager.Abort();
-				        PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
-				    }
-				}
+		}
 				
-				public static async new void Close() {
-					try {
-						stateManager.StopState();
-						await FusionSocket.Close();
-						stateManager.StartState(STATE.CLOSED);
-					} catch(NetworkException e) {
-						stateManager.Abort();
-						PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
-					} catch (Exception e) {
+		public static void StartGame() {
+			try {
+				stateManager.StopState();
+				stateManager.StartState(STATE.GAME);
+			} catch (NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			} catch (Exception e) {
+                stateManager.Abort();
+                PopupUI.Instance.OpenError(e.Message);
+            }
+		}
+				
+		public static void ShowResult() {
+			try {
+				stateManager.StopState();
+				stateManager.StartState(STATE.RESULT);
+			} catch (NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			} catch (Exception e) {
+                stateManager.Abort();
+                PopupUI.Instance.OpenError(e.Message);
+            }
+		}
+				
+		public static void ReturnRoom() {
+			try {
+				stateManager.StopState();
+				stateManager.StartState(STATE.ROOM);
+			} catch (NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			} catch (Exception e) {
+                stateManager.Abort();
+                PopupUI.Instance.OpenError(e.Message);
+            }
+		}
+
+		public static async new void CreateRoom(RoomInfo room) {
+			try {
+				stateManager.StopState();
+				await FusionSocket.CreateRoom(room);
+				stateManager.StartState(STATE.ROOM);
+			} catch (NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			}  catch (Exception e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(e.Message);
+            }
+		}
+
+		public static async new void JoinRoom(RoomInfo room) {
+			try {
+				stateManager.StopState();
+				await FusionSocket.JoinRoom(room);
+				stateManager.StartState(STATE.ROOM);
+			} catch (NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			}
+		}
+				
+		public static async new void Close() {
+			try {
+				stateManager.StopState();
+				await FusionSocket.Close();
+				stateManager.StartState(STATE.CLOSED);
+			} catch(NetworkException e) {
+				stateManager.Abort();
+				PopupUI.Instance.OpenError(GetShutdownMessage(e.ShutdownReason));
+			} catch (Exception e) {
 				stateManager.Abort();
 				PopupUI.Instance.OpenError(e.Message);
 			}
-				}
+		}
 
 		#endregion
 
 		#region Connection Event Method
 
-		// 네트워크가 종료될 때 실행되는 함수
-		public override void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
-			base.OnShutdown(runner, shutdownReason);
+        public override void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) {
+            base.OnConnectRequest(runner, request, token);
 
-			// 정상적인 종료가 아니라면 오류 메세지를 띄운다
-			if (shutdownReason != ShutdownReason.Ok)
-				PopupUI.Instance.OpenError(GetShutdownMessage(shutdownReason));
-			
-			// 아직 Closed 혹은 LOADING_LOBBY 상태가 아니라면 로비로 돌아간다
-						if (stateManager.State == STATE.NONE) return;
-						if (stateManager.State == STATE.CLOSED) return;
-						if (stateManager.State == STATE.LOADING_LOBBY) return;
-						Open();
-		}
+            NetworkSceneInfo scene;
 
-		// 네트워크 종료 이유 메세지를 반환한다
-		private static string GetShutdownMessage(ShutdownReason shutdownReason) {
-			switch(shutdownReason) {
-				case ShutdownReason.GameClosed:
-					return "방과의 접속이 끊겼습니다!";
+            // 현재 진행 중인 씬 정보 불러오기에 실패하면 연결하지 않는다
+            if (runner.TryGetSceneInfo(out scene) == false)
+                request.Refuse();
+            // 현재 로딩된 씬(= 게임 씬)이 있다면 연결하지 않는다
+            else if(scene.SceneCount > 0)
+                request.Refuse();
+            // 현재 게임 룸에 있다면 연결한다
+            else
+                request.Accept();
+        }
 
-				case ShutdownReason.GameNotFound:
-					return "해당 방이 없습니다!";
+        public override void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) {
+            base.OnConnectFailed(runner, remoteAddress, reason);
+            Open();
+        }
 
-				case ShutdownReason.GameIsFull:
-					return "인원이 꽉 찼습니다!";
+        // 네트워크가 종료될 때 실행되는 함수
+        public override void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
+            base.OnShutdown(runner, shutdownReason);
 
-				default:
-					return "오류가 발생했습니다!";
-			}
-		}
+            // 정상적인 종료가 아니라면 오류 메세지를 띄운다
+            if (shutdownReason != ShutdownReason.Ok)
+                PopupUI.Instance.OpenError(GetShutdownMessage(shutdownReason));
+        }
 
-		#endregion
+        // 네트워크 종료 이유 메세지를 반환한다
+        private static string GetShutdownMessage(ShutdownReason shutdownReason) {
+            switch(shutdownReason) {
+                case ShutdownReason.GameClosed:
+                    return "방과의 접속이 끊겼습니다!";
+
+                case ShutdownReason.GameNotFound:
+                    return "해당 방이 없습니다!";
+
+                case ShutdownReason.GameIsFull:
+                    return "인원이 꽉 찼습니다!";
+
+                case ShutdownReason.ConnectionRefused:
+                    return "이미 게임을 시작했습니다!";
+
+                default:
+                    return "오류가 발생했습니다!";
+            }
+        }
+
+        #endregion
 			
 		#region Lobby Event Method
 				

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UltimateCartFights.Network;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using WebSocketSharp;
 
 namespace UltimateCartFights.UI {
     public class RoomPanelUI : MonoBehaviour {
@@ -136,7 +136,7 @@ namespace UltimateCartFights.UI {
         public void OnStart() {
             StartButton.interactable = false;
 
-            Debug.Log("[ * Debug * ] Game Start!");
+            GameLauncher.LoadGame();
         }
 
         private void UpdateReady() {

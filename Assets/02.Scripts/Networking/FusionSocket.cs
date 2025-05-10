@@ -17,6 +17,8 @@ namespace UltimateCartFights.Network {
 
         protected static NetworkStateMachine stateManager = new NetworkStateMachine();
 
+        protected static SceneManager sceneManager;
+
         // 로비 접속 즉시가 아니라 로비 방 목록을 받을 때 상태를 LOADING_LOBBY에서 LOBBY로 바꾼다
         protected static bool isFirstSessionUpdate = true;
 
@@ -28,6 +30,9 @@ namespace UltimateCartFights.Network {
 
             Instance = this;
             DontDestroyOnLoad(Instance);
+
+            // SceneManager 컴포넌트 추가
+            sceneManager = GetComponent<SceneManager>();
         }
 
         #endregion
@@ -61,8 +66,9 @@ namespace UltimateCartFights.Network {
                 GameMode = GameMode.Host,
                 PlayerCount = room.MaxPlayer,
                 SessionProperties = GetRoomProperties(room),
+                SceneManager = sceneManager,
             });
-            
+
             if(!result.Ok)
                 throw new NetworkException(result.ShutdownReason);
         }
@@ -74,6 +80,7 @@ namespace UltimateCartFights.Network {
                 PlayerCount = room.MaxPlayer,
                 SessionProperties = GetRoomProperties(room),
                 EnableClientSessionCreation = false,
+                SceneManager = sceneManager,
             });
 
             if(!result.Ok)
@@ -83,6 +90,9 @@ namespace UltimateCartFights.Network {
         protected static async Task Close() {
             if (Runner == null)
                 return;
+
+            sceneManager.Shutdown();
+            sceneManager.LoadScene(SCENE.LOBBY);
 
             await Runner.Shutdown();
             Destroy(Runner.gameObject);

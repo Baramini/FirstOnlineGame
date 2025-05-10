@@ -266,6 +266,8 @@ GameObject:
   - component: {fileID: 4446729081614888273}
   - component: {fileID: 4018928345666286484}
   - component: {fileID: 842775518856291548}
+  - component: {fileID: 5368016190645878561}
+  - component: {fileID: 1865317870358468859}
   m_Layer: 31
   m_Name: CartPrefab
   m_TagString: Untagged
@@ -356,8 +358,6 @@ MonoBehaviour:
   renderer: {fileID: 8082539717472146708}
   backCharacter: {fileID: 329445872161612528}
   frontCharacter: {fileID: 6550918214751574977}
-  character: 0
-  color: 0
 --- !u!114 &4018928345666286484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,6 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d0e7747b6069249bebb1c0cebf527f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _PlayerID: 0
   maxSpeed: 7
   appliedSpeed: 0
   cartInput: {fileID: 842775518856291548}
@@ -469,6 +470,49 @@ MonoBehaviour:
       m_Action: Dash
       m_Flags: 0
     m_Flags: 0
+--- !u!114 &5368016190645878561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307649920354300385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2598355371
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4018928345666286484}
+  - {fileID: 1865317870358468859}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &1865317870358468859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307649920354300385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 275729121107631342}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!1 &7269842033377922299
 GameObject:
   m_ObjectHideFlags: 0
