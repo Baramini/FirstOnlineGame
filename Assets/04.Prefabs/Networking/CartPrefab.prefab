@@ -371,9 +371,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _PlayerID: 0
-  maxSpeed: 7
-  appliedSpeed: 0
-  cartInput: {fileID: 842775518856291548}
+  IsGameStarted: 1
+  _maxSpeed: 7
+  _appliedSpeed: 0
+  CART_LAYER: 31
   rigidbody: {fileID: 4293898960973035086}
 --- !u!114 &842775518856291548
 MonoBehaviour:
@@ -488,6 +489,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4018928345666286484}
+  - {fileID: 842775518856291548}
   - {fileID: 1865317870358468859}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1865317870358468859
